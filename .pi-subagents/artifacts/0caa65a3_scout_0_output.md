@@ -1,0 +1,1 @@
+I have all the information I need. Note the task title mentions "Region/Language Switcher" but the actual codebase is a "Runeterra Hub" — a LoL Champions explorer. There is no region/language switcher feature currently present in the code. Let me verify there's no region/language switching code I might have missed.

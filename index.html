@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runeterra — Campeões de League of Legends</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+
+  <nav class="navbar" id="navbar">
+    <a href="#hero" class="nav-logo">
+      <span class="nav-logo-mark">◆</span>
+      <span class="nav-logo-text">RUNETERRA</span>
+    </a>
+    <div class="nav-links">
+      <a href="#hero" class="active">Início</a>
+      <a href="#champions">Campeões</a>
+      <a href="#about">Sobre</a>
+    </div>
+    <button class="nav-mobile-toggle" id="nav-toggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <section class="hero" id="hero">
+    <div class="hero-splash" id="hero-splash"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-vignette"></div>
+    <span class="hero-credit" id="hero-credit"></span>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        <span class="hero-badge-text">Data Dragon API · Riot Games</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="hero-title-line">Runeterra</span>
+        <span class="hero-title-amp">&</span>
+        <span class="hero-title-line">Seus Campeões</span>
+      </h1>
+      <div class="hero-divider">
+        <span class="hero-divider-line"></span>
+        <span class="hero-divider-mark">◆</span>
+        <span class="hero-divider-line"></span>
+      </div>
+      <p class="hero-subtitle">Explore todos os campeões de League of Legends com lore, habilidades e skins em alta resolução — tudo em tempo real, direto da Data Dragon.</p>
+      <a href="#champions" class="hero-cta">
+        <span class="hero-cta-text">Explorar Campeões</span>
+        <span class="hero-cta-arrow">↓</span>
+      </a>
+    </div>
+
+    <div class="hero-stats" id="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="stat-total">—</span>
+        <span class="hero-stat-label">Campeões</span>
+      </div>
+      <span class="hero-stat-sep"></span>
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="stat-version">—</span>
+        <span class="hero-stat-label">Versão</span>
+      </div>
+      <span class="hero-stat-sep"></span>
+      <div class="hero-stat">
+        <span class="hero-stat-num" id="stat-update">—</span>
+        <span class="hero-stat-label">Última Atualização</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>Role para baixo</span>
+      <div class="scroll-mouse"><div class="scroll-wheel"></div></div>
+    </div>
+  </section>
+
+  <main class="champions-section" id="champions">
+    <div class="champions-header">
+      <h2 class="section-title">
+        <span class="section-title-line"></span>
+        Todos os Campeões
+        <span class="section-title-line"></span>
+      </h2>
+      <div class="controls">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" id="search" placeholder="Buscar campeão..." autocomplete="off">
+        </div>
+        <div class="filter-tags" id="filter-tags">
+          <button class="filter-tag active" data-tag="all">Todos</button>
+          <button class="filter-tag" data-tag="Fighter">Lutador</button>
+          <button class="filter-tag" data-tag="Tank">Tanque</button>
+          <button class="filter-tag" data-tag="Mage">Mago</button>
+          <button class="filter-tag" data-tag="Assassin">Assassino</button>
+          <button class="filter-tag" data-tag="Support">Suporte</button>
+          <button class="filter-tag" data-tag="Marksman">Atirador</button>
+        </div>
+      </div>
+      <div class="result-count" id="result-count"></div>
+    </div>
+    <div class="grid" id="grid">
+      <div class="loader">
+        <div class="loader-spinner"></div>
+        <p>Invocando campeões…</p>
+      </div>
+    </div>
+    <p class="no-results" id="no-results" style="display:none">
+      <span class="no-results-icon">⚔</span>
+      Nenhum campeão encontrado.
+    </p>
+  </main>
+
+  <footer class="footer" id="about">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="nav-logo-mark">◆</span> RUNETERRA
+      </div>
+      <p>Feito com dados da <strong>Data Dragon API</strong> (Riot Games).</p>
+      <p class="footer-sub">Conteúdo atualizado automaticamente a cada nova versão do jogo.</p>
+    </div>
+  </footer>
+
+  <button class="scroll-top" id="scroll-top" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
