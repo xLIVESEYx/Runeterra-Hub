@@ -1,0 +1,46 @@
+/* --- Variables & Core Palette --- */
+:root {
+  /* Hextech Gold Theme */
+  --gold-dark: #785a28;
+  --gold-medium: #c89b3c;
+  --gold-light: #f0e6d2;
+  --gold-gradient: linear-gradient(135deg, #785a28 0%, #c89b3c 50%, #f0e6d2 100%);
+  
+  /* Void / Cosmic Magic Dark Purple Palette */
+  --bg-deep: #07040d;
+  --bg-base: #0f0a1c;
+  --bg-elevated: #161026;
+  --bg-card: rgba(15, 10, 28, 0.75);
+  
+  /* Accents & Status */
+  --magic-blue: #00d2ff;
+  --magic-cyan: #00bc8c;
+  --magic-purple: #8e2de2;
+  --error: #ff4e50;
+  --status-ok: #00bc8c;
+  --status-warn: #f0a818;
+  --status-down: #ff4e50;
+  --status-cached: #6b7280;
+  
+  /* Borders & Glassmorphism */
+  --border-light: rgba(200, 155, 60, 0.2);
+  --border-glow: rgba(200, 155, 60, 0.45);
+  --glass-bg: rgba(15, 10, 28, 0.4);
+  --glass-blur: blur(14px);
+  --shadow-glow: 0 0 12px rgba(200, 155, 60, 0.5);
+  --text-dim: rgba(255, 255, 255, 0.78);
+  --text-faint: rgba(255, 255, 255, 0.48);
+  
+  /* Fonts */
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Inter', sans-serif;
+  --font-ui: 'Rajdhani', sans-serif;
+  
+  /* Layout Depth */
+  --z-bg: -3;
+  --z-particles: -2;
+  --z-nav: 100;
+  --z-card: 10;
+  --z-modal: 1000;
+  --z-lightbox: 2000;
+}

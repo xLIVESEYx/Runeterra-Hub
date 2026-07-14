@@ -1,0 +1,132 @@
+@keyframes logoGlow {
+  from { filter: drop-shadow(0 0 2px rgba(200,155,60,0.3)); }
+  to { filter: drop-shadow(0 0 10px rgba(200,155,60,0.8)); }
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1.04) translate(-0.6%, -0.8%); }
+  to   { transform: scale(1.12) translate(0.6%, -1.4%); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(0.9); opacity: 0.6; }
+  50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 16px var(--magic-cyan); }
+  100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+@keyframes statusPulse {
+  0%, 100% { transform: scale(0.9); opacity: 0.65; }
+  50% { transform: scale(1.25); opacity: 1; }
+}
+
+@keyframes scrollAnim {
+  0% { transform: translateY(0); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(14px); opacity: 0; }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modalFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes modalSlideUp {
+  from { transform: translateY(30px) scale(0.97); }
+  to { transform: translateY(0) scale(1); }
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@keyframes close-helix-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Animation properties */
+.nav-logo-mark {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.3rem;
+  animation: logoGlow 4s ease-in-out infinite alternate;
+}
+
+.hero-splash.loaded {
+  opacity: 1;
+  transform: scale(1);
+  animation: slowZoom 60s ease-in-out infinite alternate;
+}
+
+.loader-spinner {
+  animation: spin 0.8s cubic-bezier(0.55, 0.055, 0.675, 0.19) infinite;
+}
+
+.modal {
+  animation: modalFadeIn 0.35s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.modal.fade-out {
+  animation: modalFadeOut 0.25s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.modal-wrapper {
+  animation: modalSlideUp 0.45s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+.tab-panel.active {
+  animation: panelIn 0.4s ease forwards;
+}
+
+.modal-skin-card.skeleton .modal-skin-card-inner {
+  animation: shimmer 1.4s infinite;
+}
+
+.lightbox-modal {
+  animation: modalFadeIn 0.3s ease-out forwards;
+}
+
+.modal-close::after {
+  animation: close-helix-spin 7s linear infinite;
+}
+
+.lightbox-close::after {
+  animation: none;
+}
+
+/* Hover effects for close buttons */
+.modal-close:hover::after,
+.lightbox-close:hover::after {
+  animation-duration: 2.4s;
+  opacity: 0.9;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .modal-close::after,
+  .lightbox-close::after {
+    animation: none;
+  }
+  .modal-close,
+  .lightbox-close,
+  .modal-close svg,
+  .lightbox-close svg {
+    transition-duration: 0.01ms;
+  }
+}

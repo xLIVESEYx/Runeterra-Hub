@@ -10,7 +10,7 @@ Um portal web cinematográfico, ultra-rápido e responsivo para explorar o unive
 
 ## ⚡ Recursos Principais
 
-- **Auto-Atualização Autônoma**: O site consome diretamente a **Data Dragon API** da Riot. Toda vez que um novo Patch é lançado (ex: `13.24.1` -> `14.1.1`), o site identifica a nova versão e atualiza os campeões, estatísticas, habilidades, lores e skins **automaticamente**, sem intervenção manual.
+- **Auto-Atualização Autônoma**: O site consome diretamente a **Data Dragon API** da Riot. Toda vez que um novo Patch é lançado (ex: `13.24.1` -> `14.1.1`), o site identifica a nova versão e atualiza os campeões, estatísticas, habilidades, lores e skins **automaticamente**, sem intervenção manual. A data de lançamento exibida é resolvida a partir de uma lista de patches versionada e incluída no projeto (`src/data/patches.json`).
 - **Cache Local Inteligente (Stale-While-Revalidate)**: Os dados de patches e campeões são salvos em `localStorage`. Na próxima visita, o site carrega instantaneamente em milissegundos usando o cache e valida a versão em background. Se houver um novo Patch, ele atualiza a tela de forma fluida.
 - **Galeria de Skins Sem Cortes (Widescreen Lightbox)**: Clicar em qualquer skin abre a ilustração oficial horizontal de splash em alta resolução, ajustada ao viewport com `object-fit: contain` (sem cortes distorcidos) e navegação simplificada por teclado (`←`, `→`, `Esc`).
 - **Cards Dinâmicos & Micro-Interações**: Efeito Hover Hextech com zoom de câmera lento na splash e fumaça cósmica em degradê.
@@ -24,22 +24,42 @@ Um portal web cinematográfico, ultra-rápido e responsivo para explorar o unive
 O site é estático e super leve, não dependendo de frameworks pesados, garantindo carregamento rápido em dispositivos móveis.
 
 ```bash
-├── index.html          # Entrada principal (raiz — exigido pelo GitHub Pages)
-├── .nojekyll           # Evita que o GitHub Pages tente processar pastas sob Jekyll
-├── README.md           # Documentação e guia de implantação
-├── LICENSE             # Licença pública MIT
-├── .gitignore          # Arquivos e diretórios ocultados do controle de versão
+├── index.html               # Entrada principal (raiz — exigido pelo GitHub Pages)
+├── .nojekyll                # Evita que o GitHub Pages tente processar pastas sob Jekyll
+├── README.md                # Documentação e guia de implantação
+├── LICENSE                  # Licença pública MIT
+├── .gitignore               # Arquivos e diretórios ocultados do controle de versão
 ├── .github/
 │   └── workflows/
-│       └── deploy.yml  # Workflow de deploy automático para GitHub Pages
+│       └── deploy.yml       # Workflow de deploy automático para GitHub Pages
 └── src/
-    ├── app.js          # Lógica de estados, cache, lightbox, e conexões API
-    └── styles.css      # Design System Hextech, animações, media-queries
+    ├── app.js               # Ponto de entrada: inicializa partículas, UI e campeões
+    ├── services/
+    │   └── api.js           # Conexões Data Dragon, cache localStorage e detecção offline
+    ├── data/
+    │   ├── data.js          # Orquestra o carregamento (stale-while-revalidate)
+    │   └── patches.json     # Datas de lançamento por versão de patch
+    ├── components/
+    │   ├── card/            # Card de campeão
+    │   ├── filters/         # Busca e filtros por função
+    │   ├── modal/           # Modal de detalhes e lightbox de skins
+    │   ├── particles/       # Fundo animado de partículas
+    │   ├── shared/          # Utilitários e constantes compartilhadas
+    │   ├── stats/           # Estatísticas do hero
+    │   └── ui/              # Navbar, scroll, menu e atalhos de teclado
+    └── styles/
+        ├── variables.css        # Tokens do Design System (cores, fontes, z-index)
+        ├── reset.css            # Reset e estilos base
+        ├── layout.css           # Layout e estrutura de seções
+        ├── components.css       # Estilos de componentes
+        ├── components-specific.css  # Estilos específicos (modal, lightbox, etc.)
+        ├── animations.css       # Animações e transições
+        └── responsive.css       # Media-queries e responsividade
 ```
 
-> A raiz contém apenas arquivos obrigatórios (`index.html`, `.nojekyll`, meta-arquivos de repositório e workflows). Todo o código-fonte fica isolado em `src/`, mantendo a estrutura limpa.
+> A raiz contém apenas arquivos obrigatórios (`index.html`, `.nojekyll`, meta-arquivos de repositório e workflows). Todo o código-fonte fica isolado em `src/`, organizado de forma modular (serviços, dados, componentes e estilos).
 
-> ℹ️ O `index.html` referencia os assets como `src/styles.css` e `src/app.js` (caminhos relativos), o que funciona corretamente tanto em domínio próprio quanto em subpaths do GitHub Pages (`https://usuario.github.io/repositorio/`).
+> ℹ️ O `index.html` referencia os assets sob `src/` (caminhos relativos), o que funciona corretamente tanto em domínio próprio quanto em subpaths do GitHub Pages (`https://usuario.github.io/repositorio/`).
 
 ---
 

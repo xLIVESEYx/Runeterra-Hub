@@ -1,0 +1,91 @@
+/* --- Responsive Layout Adjustments --- */
+@media (max-width: 1024px) {
+  .navbar { padding: 0 2rem; }
+  .modal-wrapper { max-width: 90%; }
+  .lore-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 76px;
+    right: 0;
+    height: calc(100vh - 76px);
+    width: 280px;
+    flex-direction: column;
+    background: rgba(15, 10, 28, 0.96);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 3rem;
+    gap: 2rem;
+    transform: translateX(100%);
+    border-left: 1px solid var(--gold-dark);
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  .nav-links.open {
+    transform: translateX(0);
+  }
+
+  .nav-mobile-toggle {
+    display: flex;
+  }
+
+  .hero-stats {
+    gap: 1.5rem;
+    padding: 1.2rem 2rem;
+  }
+  .hero-stat-sep { height: 32px; }
+  
+  .modal { padding: 1.5rem; }
+  .modal-header { height: 220px; padding: 1.5rem 2rem; }
+  .modal-profile-img { width: 80px; height: 80px; }
+  .modal-champ-name { font-size: 2rem; }
+  .modal-body { padding: 1.8rem 2rem; }
+  
+  .lightbox-container { width: 100vw; height: 88vh; }
+  .lightbox-image-wrapper { padding: 0 3rem 3.5rem; }
+  .lightbox-btn { --btn-size: 44px; --btn-icon-size: 20px; }
+  .lightbox-prev { left: 2.5rem; }
+  .lightbox-next { right: 2.5rem; }
+
+  /* NOVO botão de fechar responsivo */
+  .modal-close { --close-size: 42px; --close-icon-size: 16px; top: 0.9rem; right: 0.9rem; }
+  .lightbox-close { --close-size: 46px; --close-icon-size: 18px; top: 0.7rem; right: 0.7rem; }
+}
+
+@media (max-width: 480px) {
+  .hero-stats {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.2rem;
+    padding: 1.5rem;
+  }
+  .hero-stat-sep { display: none; }
+  .hero-stat { flex: 0 0 40%; }
+  
+  .controls { flex-direction: column; align-items: stretch; }
+  .search-box { max-width: 100%; }
+  
+  .modal { padding: 0.6rem; }
+  .modal-header { height: 180px; padding: 1rem 1.2rem; }
+  .modal-profile-img { width: 64px; height: 64px; border-width: 2.5px; }
+  .modal-champ-name { font-size: 1.6rem; }
+  .modal-champ-title { font-size: 0.95rem; }
+  .modal-body { padding: 1.2rem; }
+  
+  .lightbox-image-wrapper { padding: 0 2rem 3rem; }
+  .lightbox-prev { left: 1.5rem; }
+  .lightbox-next { right: 1.5rem; }
+  
+  .tabs-header { gap: 1.2rem; overflow-x: auto; scrollbar-width: none; }
+  .tabs-header::-webkit-scrollbar { display: none; }
+  .tab-btn { font-size: 1rem; padding: 0.6rem 0; }
+  
+  .ability-detail-card { flex-direction: column; gap: 1rem; }
+  .ability-img-wrap { width: 56px; height: 56px; }
+
+  /* NOVO botão de fechar — mobile pequeno */
+  .modal-close { --close-size: 38px; --close-icon-size: 14px; top: 0.7rem; right: 0.7rem; }
+  .lightbox-close { --close-size: 40px; --close-icon-size: 14px; top: 0.5rem; right: 0.5rem; }
+}
