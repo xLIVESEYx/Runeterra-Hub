@@ -175,7 +175,7 @@ export async function openModal(id) {
 
     const profileImg = document.createElement("img");
     profileImg.className = "modal-profile-img";
-    profileImg.src = `${API_BASE}/cdn/img/champion/${detail.id}.png`;
+    profileImg.src = `${API_BASE}/cdn/${version}/img/champion/${detail.id}.png`;
     profileImg.alt = detail.name;
 
     const headerMeta = document.createElement("div");
