@@ -42,6 +42,14 @@
   .modal-profile-img { width: 80px; height: 80px; }
   .modal-champ-name { font-size: 2rem; }
   .modal-body { padding: 1.8rem 2rem; }
+
+  .patchnotes-header { padding: 1.5rem 1.8rem; gap: 1rem; flex-wrap: wrap; }
+  .patchnotes-header-title { font-size: 1.4rem; }
+  .patchnotes-index-link { font-size: 0.72rem; padding: 0.35rem 0.7rem; }
+  .patchnotes-body { padding: 1.2rem 1.5rem 1.8rem; }
+  .patchnotes-list { max-height: 55vh; }
+  .patchnotes-item { flex-direction: column; align-items: flex-start; gap: 0.6rem; }
+  .patchnotes-item-link { width: 100%; justify-content: center; }
   
   .lightbox-container { width: 100vw; height: 88vh; }
   .lightbox-image-wrapper { padding: 0 3rem 3.5rem; }

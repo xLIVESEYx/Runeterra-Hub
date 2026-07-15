@@ -87,6 +87,12 @@ export async function getLatestVersion() {
   return cachedVersion;
 }
 
+export async function getRecentVersions(limit = 12) {
+  const versions = await fetchJSON(`${API_BASE}/api/versions.json`);
+  if (versions && versions.length) cachedVersion = versions[0];
+  return versions.slice(0, limit);
+}
+
 export async function loadChampionsData(version) {
   const latestVersion = version || await getLatestVersion();
   const champList = await fetchJSON(`${API_BASE}/cdn/${latestVersion}/data/pt_BR/champion.json`);

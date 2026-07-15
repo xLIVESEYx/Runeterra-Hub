@@ -1,5 +1,6 @@
 import { setupFilterUI } from '../filters/filters.js';
 import { closeModal } from '../modal/modal.js';
+import { setupPatchNotes } from '../patchnotes/patchnotes.js';
 
 export function setupKeybindings() {
   document.addEventListener("keydown", e => {
@@ -78,4 +79,5 @@ export function initUI() {
   setupScrollEvents();
   setupNavMenu();
   setupSmoothScroll();
+  setupPatchNotes();
 }

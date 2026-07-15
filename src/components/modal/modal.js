@@ -336,7 +336,9 @@ export async function openModal(id) {
     const skinsWrapper = document.createElement("div");
     skinsWrapper.className = "modal-skins-container";
 
-    const filteredSkins = (detail.skins || []).filter(s => typeof s.num === 'number' && s.num >= 0);
+    const filteredSkins = (detail.skins || []).filter(s =>
+      typeof s.num === 'number' && s.num >= 0 && !s.parentSkin
+    );
     const validLightboxSkins = [];
 
     filteredSkins.forEach(skin => {
