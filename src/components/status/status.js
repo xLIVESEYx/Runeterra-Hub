@@ -1,10 +1,10 @@
 import { checkApiStatus, isOnline } from '../../services/api.js';
 
 const STATE_LABELS = {
-  online: "APIs online",
-  degraded: "API instável",
-  offline: "APIs offline",
-  cached: "Modo cache",
+  online: "online",
+  degraded: "instável",
+  offline: "offline",
+  cached: "cache",
 };
 
 const STATE_CLASSES = {
@@ -14,39 +14,52 @@ const STATE_CLASSES = {
   cached: "is-cached",
 };
 
-let statusEl = null;
-let labelEl = null;
+const SOURCES = [
+  { key: "ddragon", elId: "api-status-dd", labelId: "api-status-label-dd" },
+  { key: "cdragon", elId: "api-status-cd", labelId: "api-status-label-cd" },
+];
+
+let monitors = [];
 let monitorTimer = null;
 
-function setStatus(state) {
-  if (!statusEl) return;
-  statusEl.classList.remove("is-online", "is-degraded", "is-offline", "is-cached");
-  statusEl.classList.add(STATE_CLASSES[state] || "is-cached");
+function setStatus(stateEl, labelEl, state) {
+  if (!stateEl) return;
+  stateEl.classList.remove("is-online", "is-degraded", "is-offline", "is-cached");
+  stateEl.classList.add(STATE_CLASSES[state] || "is-cached");
   if (labelEl) labelEl.textContent = STATE_LABELS[state] || "—";
 }
 
 async function refresh() {
-  if (!statusEl) return;
   if (!isOnline()) {
-    setStatus("cached");
+    monitors.forEach(m => setStatus(m.statusEl, m.labelEl, "cached"));
     return;
   }
-  setStatus("degraded");
-  const { state } = await checkApiStatus();
-  setStatus(state);
+  monitors.forEach(m => setStatus(m.statusEl, m.labelEl, "degraded"));
+
+  const { sources } = await checkApiStatus();
+  monitors.forEach(m => {
+    const ok = sources && sources[m.key];
+    setStatus(m.statusEl, m.labelEl, ok ? "online" : "offline");
+  });
 }
 
 export function initStatusMonitor() {
-  statusEl = document.getElementById("api-status");
-  labelEl = document.getElementById("api-status-label");
-  if (!statusEl) return;
+  monitors = SOURCES.map(s => ({
+    key: s.key,
+    statusEl: document.getElementById(s.elId),
+    labelEl: document.getElementById(s.labelId),
+  })).filter(m => m.statusEl);
 
-  setStatus("cached");
+  if (!monitors.length) return;
+
+  monitors.forEach(m => setStatus(m.statusEl, m.labelEl, "cached"));
   refresh();
   monitorTimer = setInterval(refresh, 60000);
 
   window.addEventListener("online", refresh);
-  window.addEventListener("offline", () => setStatus("cached"));
+  window.addEventListener("offline", () => {
+    monitors.forEach(m => setStatus(m.statusEl, m.labelEl, "cached"));
+  });
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) refresh();
   });

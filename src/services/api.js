@@ -124,6 +124,8 @@ async function pingUrl(url, { timeout = 8000, method = "GET", cors = false } = {
   }
 }
 
+const CDRAGON_PING_URL = "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-splashes/266/metadata.json";
+
 export async function checkApiStatus() {
   if (!isOnline()) {
     return { state: "offline", sources: {} };
@@ -132,19 +134,17 @@ export async function checkApiStatus() {
   const cached = getCachedChampions();
   const version = cached ? cached.version : null;
 
-  const sources = {
-    versions: await pingUrl(`${API_BASE}/api/versions.json`, { cors: true }),
-    champions: version
-      ? await pingUrl(`${API_BASE}/cdn/${version}/data/pt_BR/champion.json`, { cors: true })
-      : false,
-    images: version
-      ? await pingUrl(`${API_BASE}/cdn/img/champion/Aatrox_0.jpg`, { method: "HEAD" })
-      : false,
-  };
+  const ddragonOk =
+    (await pingUrl(`${API_BASE}/api/versions.json`, { cors: true })) &&
+    (!version || (await pingUrl(`${API_BASE}/cdn/${version}/data/pt_BR/champion.json`, { cors: true })));
+
+  const cdragonOk = await pingUrl(CDRAGON_PING_URL, { cors: true });
+
+  const sources = { ddragon: !!ddragonOk, cdragon: !!cdragonOk };
 
   const okCount = Object.values(sources).filter(Boolean).length;
   let state;
-  if (okCount === 3) state = "online";
+  if (okCount === 2) state = "online";
   else if (okCount === 0) state = "offline";
   else state = "degraded";
 

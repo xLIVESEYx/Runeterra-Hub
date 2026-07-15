@@ -460,6 +460,7 @@
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  image-rendering: high-quality;
 }
 
 .modal-skin-card-title {
@@ -582,6 +583,7 @@
   border: 1px solid var(--border-light);
   box-shadow: 0 30px 80px rgba(0,0,0,0.9);
   transition: opacity 0.3s ease;
+  image-rendering: high-quality;
 }
 
 .lightbox-loader {
@@ -882,6 +884,14 @@
 .footer-sub {
   font-size: 0.85rem;
   opacity: 0.65;
+}
+
+.api-status-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
 }
 
 .api-status {

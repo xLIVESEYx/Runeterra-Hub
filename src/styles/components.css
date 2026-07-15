@@ -143,6 +143,7 @@
   object-fit: cover;
   transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.6s ease;
   filter: saturate(0.9) brightness(0.85);
+  image-rendering: high-quality;
 }
 
 .card-img-error {

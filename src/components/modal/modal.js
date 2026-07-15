@@ -1,5 +1,6 @@
 import { API_BASE, loadChampionDetail, getCachedVersion, getLatestVersion } from '../../services/api.js';
 import { TAG_LABELS } from '../shared/utils.js';
+import { getSplashUrl, loadSplashWithFallback, getProfileIconUrl, getPassiveUrl, getSpellUrl } from '../../services/images.js';
 
 let currentSkinsList = [];
 let currentSkinIndex = 0;
@@ -73,14 +74,25 @@ export function openSkinLightbox(skins, startIndex) {
 
     loader.style.display = "block";
     img.style.opacity = "0";
+    img.decoding = "async";
+    delete img.dataset.usingFallback;
 
-    img.src = `${API_BASE}/cdn/img/champion/splash/${skin.champId}_${skin.num}.jpg`;
-    img.alt = skin.name;
+    const primaryUrl = getSplashUrl(skin.champId, skin.num, { variant: "uncentered", prefer: "cd" });
+    const fallbackUrl = `${API_BASE}/cdn/img/champion/splash/${skin.champId}_${skin.num}.jpg`;
 
     img.onload = () => {
       loader.style.display = "none";
       img.style.opacity = "1";
     };
+
+    img.onerror = () => {
+      if (img.dataset.usingFallback === "1" || img.src === fallbackUrl) return;
+      img.dataset.usingFallback = "1";
+      img.src = fallbackUrl;
+    };
+
+    img.alt = skin.name;
+    img.src = primaryUrl;
 
     title.textContent = skin.name;
     counter.textContent = `${currentSkinIndex + 1} de ${currentSkinsList.length}`;
@@ -165,7 +177,16 @@ export async function openModal(id) {
 
     const header = document.createElement("div");
     header.className = "modal-header";
-    header.style.backgroundImage = `url(${API_BASE}/cdn/img/champion/splash/${detail.id}_0.jpg)`;
+
+    const headerPrimaryUrl = getSplashUrl(detail.id, 0, { variant: "centered", prefer: "cd" });
+    const headerFallbackUrl = `${API_BASE}/cdn/img/champion/splash/${detail.id}_0.jpg`;
+    loadSplashWithFallback({
+      primaryUrl: headerPrimaryUrl,
+      fallbackUrl: headerFallbackUrl,
+      onLoaded: (resolvedUrl) => {
+        header.style.backgroundImage = `url(${resolvedUrl})`;
+      }
+    });
 
     const headerOverlay = document.createElement("div");
     headerOverlay.className = "modal-header-overlay";
@@ -175,7 +196,7 @@ export async function openModal(id) {
 
     const profileImg = document.createElement("img");
     profileImg.className = "modal-profile-img";
-    profileImg.src = `${API_BASE}/cdn/${version}/img/champion/${detail.id}.png`;
+    profileImg.src = getProfileIconUrl(version, detail.id);
     profileImg.alt = detail.name;
 
     const headerMeta = document.createElement("div");
@@ -287,7 +308,7 @@ export async function openModal(id) {
       passCard.className = "ability-detail-card";
       passCard.innerHTML = `
         <div class="ability-img-wrap">
-          <img src="${API_BASE}/cdn/${version}/img/passive/${pass.image.full}" alt="${pass.name}">
+          <img src="${getPassiveUrl(version, pass.image.full)}" alt="${pass.name}">
           <span class="ability-letter passive">P</span>
         </div>
         <div class="ability-desc-wrap">
@@ -308,7 +329,7 @@ export async function openModal(id) {
 
       spellCard.innerHTML = `
         <div class="ability-img-wrap">
-          <img src="${API_BASE}/cdn/${version}/img/spell/${spell.image.full}" alt="${spell.name}">
+          <img src="${getSpellUrl(version, spell.image.full)}" alt="${spell.name}">
           <span class="ability-letter">${spellKeys[i]}</span>
         </div>
         <div class="ability-desc-wrap">
@@ -330,7 +351,6 @@ export async function openModal(id) {
     skinsPanel.innerHTML = `
       <div class="skins-tab-header">
         <h2>Skins Disponíveis</h2>
-        <p>Clique em qualquer skin para abrir a ilustração oficial em tela cheia (alta resolução).</p>
       </div>
     `;
 
