@@ -1,16 +1,19 @@
 import patchesData from '../../data/patches.json' with { type: 'json' };
 import { API_BASE, getDetectedPatchDate, getRiotVersion } from '../../services/api.js';
 import { getSplashUrl, loadSplashWithFallback } from '../../services/images.js';
+import { refreshVersionDisplay } from '../../services/version-sync.js';
 
 export function updateHeroStats(champions, version) {
   const total = champions.length;
   document.getElementById("stat-total").textContent = total;
-  document.getElementById("stat-version").textContent = getRiotVersion(version) || version;
+  updateVersionDisplay(version);
 
   const updateEl = document.getElementById("stat-update");
   if (updateEl) {
     updateEl.textContent = patchesData[version] || getDetectedPatchDate(version) || "—";
   }
+
+  refreshVersionDisplay();
 
   const splash = document.getElementById("hero-splash");
   if (splash && champions.length) {
@@ -32,4 +35,9 @@ export function updateHeroStats(champions, version) {
       onAllFailed: () => splash.classList.add("loaded")
     });
   }
+}
+
+export function updateVersionDisplay(version) {
+  const el = document.getElementById("stat-version");
+  if (el) el.textContent = getRiotVersion(version) || version || "—";
 }
