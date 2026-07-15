@@ -1,4 +1,4 @@
-import { API_BASE, loadChampionDetail, getCachedVersion } from '../../services/api.js';
+import { API_BASE, loadChampionDetail, getCachedVersion, getLatestVersion } from '../../services/api.js';
 import { TAG_LABELS } from '../shared/utils.js';
 
 let currentSkinsList = [];
@@ -134,6 +134,8 @@ export async function openModal(id) {
     const detail = await loadChampionDetail(id);
     loadingModal.remove();
 
+    const version = getCachedVersion() || await getLatestVersion();
+
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.addEventListener("click", (e) => {
@@ -173,8 +175,7 @@ export async function openModal(id) {
 
     const profileImg = document.createElement("img");
     profileImg.className = "modal-profile-img";
-    const version = getCachedVersion();
-    profileImg.src = `${API_BASE}/cdn/${version}/img/champion/${detail.id}.png`;
+    profileImg.src = `${API_BASE}/cdn/img/champion/${detail.id}.png`;
     profileImg.alt = detail.name;
 
     const headerMeta = document.createElement("div");
