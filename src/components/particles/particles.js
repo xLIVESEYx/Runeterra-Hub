@@ -1,3 +1,9 @@
+let rafId = null;
+let running = false;
+let resizeHandler = null;
+let visibilityHandler = null;
+let resizeTimer = null;
+
 export function initParticles() {
   const canvas = document.getElementById("particles");
   if (!canvas) return;
@@ -41,16 +47,60 @@ export function initParticles() {
       ctx.fillStyle = `rgba(${p.color}, ${p.a})`;
       ctx.fill();
     }
-    requestAnimationFrame(tick);
+    rafId = requestAnimationFrame(tick);
   }
 
-  let resizeTimer;
-  window.addEventListener("resize", () => {
+  function start() {
+    if (running) return;
+    running = true;
+    tick();
+  }
+
+  function stop() {
+    running = false;
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
+
+  resizeHandler = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { resize(); makeParticles(); }, 200);
-  });
+  };
+  window.addEventListener("resize", resizeHandler);
+
+  visibilityHandler = () => {
+    if (document.hidden) stop();
+    else start();
+  };
+  document.addEventListener("visibilitychange", visibilityHandler);
 
   resize();
   makeParticles();
+
+  if (document.hidden) return;
+
+  running = true;
   tick();
+}
+
+export function stopParticles() {
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId);
+    rafId = null;
+  }
+  running = false;
+  if (resizeTimer) {
+    clearTimeout(resizeTimer);
+    resizeTimer = null;
+  }
+  if (resizeHandler) {
+    window.removeEventListener("resize", resizeHandler);
+    resizeHandler = null;
+  }
+  if (visibilityHandler) {
+    document.removeEventListener("visibilitychange", visibilityHandler);
+    visibilityHandler = null;
+  }
 }

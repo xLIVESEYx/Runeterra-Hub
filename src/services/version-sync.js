@@ -1,13 +1,11 @@
-import { API_BASE, getRiotVersion, recordPatchDate, getDetectedPatchDate } from './api.js';
+import { getRiotVersion, recordPatchDate, getDetectedPatchDate, fetchVersions } from './api.js';
 import patchesData from '../data/patches.json' with { type: 'json' };
 
 export async function refreshVersionDisplay() {
   if (typeof navigator !== 'undefined' && !navigator.onLine) return;
 
   try {
-    const resp = await fetch(`${API_BASE}/api/versions.json`, { cache: 'no-store' });
-    if (!resp.ok) return;
-    const versions = await resp.json();
+    const versions = await fetchVersions();
     const latest = versions && versions[0];
     if (!latest) return;
 

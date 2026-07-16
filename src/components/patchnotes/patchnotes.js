@@ -1,4 +1,4 @@
-import { getRecentVersions, getRiotVersion, isOnline } from '../../services/api.js';
+import { getRecentVersions, getRiotVersion, isOnline, getCachedChampions } from '../../services/api.js';
 import patchesData from '../../data/patches.json' with { type: 'json' };
 
 const PATCH_NOTES_LIMIT = 12;
@@ -137,11 +137,8 @@ export function openPatchNotesModal() {
     `;
     getRecentVersions(PATCH_NOTES_LIMIT)
       .then((versions) => {
-        let current = null;
-        try {
-          const cached = JSON.parse(localStorage.getItem('runeterra_champions'));
-          if (cached) current = cached.version;
-        } catch {}
+        const cached = getCachedChampions();
+        const current = cached ? cached.version : null;
         renderList(body, versions, current);
       })
       .catch((err) => {

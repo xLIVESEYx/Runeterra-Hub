@@ -6,6 +6,29 @@ const CACHE_PREFIX = "runeterra_";
 const CHAMPIONS_CACHE_KEY = CACHE_PREFIX + "champions";
 const PATCH_DATES_KEY = CACHE_PREFIX + "patch_dates";
 
+const VERSIONS_TTL_MS = 60 * 60 * 1000;
+let versionsCache = null;
+let versionsPromise = null;
+
+export async function fetchVersions({ force = false } = {}) {
+  const now = Date.now();
+  if (!force && versionsPromise) return versionsPromise;
+  if (!force && versionsCache && (now - versionsCache.timestamp) < VERSIONS_TTL_MS) {
+    return versionsCache.data;
+  }
+  versionsPromise = (async () => {
+    try {
+      const data = await fetchJSON(`${API_BASE}/api/versions.json`);
+      versionsCache = { data, timestamp: Date.now() };
+      if (data && data.length) cachedVersion = data[0];
+      return data;
+    } finally {
+      versionsPromise = null;
+    }
+  })();
+  return versionsPromise;
+}
+
 function readCache(key) {
   try {
     const raw = localStorage.getItem(key);
@@ -82,13 +105,13 @@ export async function fetchJSON(url) {
 
 export async function getLatestVersion() {
   if (cachedVersion) return cachedVersion;
-  const versions = await fetchJSON(`${API_BASE}/api/versions.json`);
-  cachedVersion = versions[0];
+  const versions = await fetchVersions();
+  cachedVersion = versions && versions[0];
   return cachedVersion;
 }
 
 export async function getRecentVersions(limit = 12) {
-  const versions = await fetchJSON(`${API_BASE}/api/versions.json`);
+  const versions = await fetchVersions();
   if (versions && versions.length) cachedVersion = versions[0];
   return versions.slice(0, limit);
 }
@@ -99,10 +122,19 @@ export async function loadChampionsData(version) {
   return { champions: Object.values(champList.data), version: latestVersion };
 }
 
+const championDetailCache = new Map();
+const CHAMPION_DETAIL_TTL_MS = 30 * 60 * 1000;
+
 export async function loadChampionDetail(id) {
+  const hit = championDetailCache.get(id);
+  if (hit && (Date.now() - hit.timestamp) < CHAMPION_DETAIL_TTL_MS) {
+    return hit.data;
+  }
   const latestVersion = await getLatestVersion();
   const data = await fetchJSON(`${API_BASE}/cdn/${latestVersion}/data/pt_BR/champion/${id}.json`);
-  return data.data[id];
+  const result = data.data[id];
+  championDetailCache.set(id, { data: result, timestamp: Date.now() });
+  return result;
 }
 
 async function pingUrl(url, { timeout = 8000, method = "GET", cors = false } = {}) {
